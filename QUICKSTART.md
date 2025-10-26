@@ -1,44 +1,108 @@
 # Quick Start Guide - Smart Appointment Booking System
 
-**Get the system running in 5 minutes!**
+**Get the system running in 10 minutes!**
 
 ---
 
-## ⚡ 5-Minute Quick Start
+## ⚡ 10-Minute Quick Start (Local Development)
 
 ### Prerequisites Check
-```bash
-# Check Docker is installed
-docker --version
+```powershell
+# Check Java is installed
+java -version
 
-# Check Docker Compose is installed
-docker-compose --version
+# Check Maven is installed
+mvn -version
+
+# Verify MySQL is installed
+mysql --version
+
+# Verify RabbitMQ is installed (and running)
+# Windows: Check Services for RabbitMQ
+# macOS/Linux: brew services list
 ```
 
-### Step 1: Clone/Navigate to Project
-```bash
-cd SmartAppointmentBookingSystem
+### Step 1: Verify Database & RabbitMQ Services
+
+#### Windows
+```powershell
+# Make sure MySQL is running
+# Check: Services → MySQL80
+# Or run mysql to verify
+mysql -u root -p -e "SELECT @@version;"
+
+# Make sure RabbitMQ is running
+# Check: Services → RabbitMQ
 ```
 
-### Step 2: Start Everything with One Command
+#### macOS/Linux
 ```bash
-# Linux/Mac
-docker-compose up -d
+# Start MySQL if not running
+brew services start mysql
 
+# Start RabbitMQ if not running
+brew services start rabbitmq
+```
+
+### Step 2: Set Up Databases
+
+Create and initialize the databases for each service:
+
+```powershell
 # Windows PowerShell
-docker-compose up -d
+mysql -u root -p < auth-service/database/schema.sql
+mysql -u root -p < user-service/database/schema.sql
+mysql -u root -p < appointment-service/database/schema.sql
+mysql -u root -p < service-catalog-service/database/schema.sql
+mysql -u root -p < notification-service/database/schema.sql
 ```
 
-### Step 3: Wait for Services (30-60 seconds)
 ```bash
-# Watch the logs
-docker-compose logs -f
+# macOS/Linux
+mysql -u root -p < auth-service/database/schema.sql
+mysql -u root -p < user-service/database/schema.sql
+mysql -u root -p < appointment-service/database/schema.sql
+mysql -u root -p < service-catalog-service/database/schema.sql
+mysql -u root -p < notification-service/database/schema.sql
+```
 
-# Or check individual services
-docker-compose ps
+### Step 3: Start All Microservices
+
+Open **5 separate terminal/PowerShell windows** and run each command:
+
+**Terminal 1 - Auth Service (Port 8001)**
+```bash
+cd auth-service
+mvn spring-boot:run
+```
+
+**Terminal 2 - User Service (Port 8002)**
+```bash
+cd user-service
+mvn spring-boot:run
+```
+
+**Terminal 3 - Appointment Service (Port 8003)**
+```bash
+cd appointment-service
+mvn spring-boot:run
+```
+
+**Terminal 4 - Service Catalog Service (Port 8004)**
+```bash
+cd service-catalog-service
+mvn spring-boot:run
+```
+
+**Terminal 5 - Notification Service (Port 8005)**
+```bash
+cd notification-service
+mvn spring-boot:run
 ```
 
 ### Step 4: Access Services
+
+Once all services are running, access them at:
 
 | Service | URL |
 |---------|-----|
@@ -146,40 +210,40 @@ curl -X GET http://localhost:8005/api/v1/email-logs \
 
 ## 🔍 Verify Everything Works
 
-### Check All Containers Are Running
-```bash
-docker-compose ps
+### Check All Services Are Running
+```powershell
+# Windows: Check each port is responding
+Invoke-WebRequest -Uri "http://localhost:8001/swagger-ui.html"
+Invoke-WebRequest -Uri "http://localhost:8002/swagger-ui.html"
+Invoke-WebRequest -Uri "http://localhost:8003/swagger-ui.html"
+Invoke-WebRequest -Uri "http://localhost:8004/swagger-ui.html"
+Invoke-WebRequest -Uri "http://localhost:8005/swagger-ui.html"
 
-# Should show:
-# - postgres (healthy)
-# - rabbitmq (healthy)
-# - auth-service (Up)
-# - user-service (Up)
-# - appointment-service (Up)
-# - service-catalog-service (Up)
-# - notification-service (Up)
+# Or use curl
+curl http://localhost:8001/actuator/health
+curl http://localhost:8002/actuator/health
+curl http://localhost:8003/actuator/health
+curl http://localhost:8004/actuator/health
+curl http://localhost:8005/actuator/health
 ```
 
 ### Check Service Logs
-```bash
-# All services
-docker-compose logs
-
-# Specific service
-docker-compose logs auth-service
-docker-compose logs appointment-service
-docker-compose logs notification-service
+Look at the terminal window where you started each service. You should see:
+```
+Started [ServiceName] in X.XXX seconds
 ```
 
 ### Access Databases
-```bash
-# Connect to PostgreSQL
-docker exec -it appointment_db psql -U postgres -d appointment_db
+```powershell
+# Connect to MySQL using mysql
+mysql -u root -p
 
-# In psql shell:
-\dt  # List tables
+# In mysql shell, check tables
+SHOW DATABASES;  # List databases
+USE auth_db;  # Connect to auth_db
+SHOW TABLES;  # List tables
 SELECT COUNT(*) FROM users;  # Check user count
-SELECT * FROM refresh_tokens;  # Check tokens
+EXIT;  # Exit
 ```
 
 ### Access RabbitMQ Management
@@ -191,24 +255,23 @@ SELECT * FROM refresh_tokens;  # Check tokens
 
 ## 🛑 Stopping & Cleanup
 
-### Stop All Services (keep data)
-```bash
-docker-compose stop
+### Stop Individual Services
+Simply close the terminal windows or press `Ctrl+C` in each terminal
+
+### Stop MySQL & RabbitMQ
+```powershell
+# Windows
+# Services → Stop MySQL80 and RabbitMQ
+
+# Or using command line:
+net stop MySQL80
+net stop RabbitMQ
 ```
 
-### Stop & Remove Containers (keep data)
 ```bash
-docker-compose down
-```
-
-### Full Cleanup (remove everything)
-```bash
-docker-compose down -v  # -v removes volumes (data!)
-```
-
-### Restart Services
-```bash
-docker-compose restart
+# macOS/Linux
+brew services stop mysql
+brew services stop rabbitmq
 ```
 
 ---
@@ -216,50 +279,67 @@ docker-compose restart
 ## 🆘 Troubleshooting
 
 ### Services not starting?
+
+**Check if Java is running properly:**
+```powershell
+# Windows PowerShell
+Get-Process java
+
+# Or check specific port
+netstat -ano | findstr :8001
+```
+
 ```bash
-# Check logs
-docker-compose logs
-
-# Rebuild containers
-docker-compose build --no-cache
-
-# Start fresh
-docker-compose up --force-recreate
+# macOS/Linux
+ps aux | grep java
+lsof -i :8001
 ```
 
 ### Database connection issues?
+
 ```bash
-# Check PostgreSQL is running
-docker-compose logs postgres
+# Test MySQL connection
+mysql -u root -p -e "SELECT @@version;"
 
-# Wait for PostgreSQL to be healthy
-docker-compose ps postgres
-
-# Test connection
-docker exec -it appointment_db psql -U postgres -c "SELECT 1"
+# Check if MySQL service is running
+mysqladmin -u root -p status
 ```
 
 ### RabbitMQ issues?
-```bash
-# Check RabbitMQ logs
-docker-compose logs rabbitmq
 
-# Restart RabbitMQ
-docker-compose restart rabbitmq
+```powershell
+# Windows: Check if RabbitMQ service is running
+Get-Service RabbitMQ
 
-# Access dashboard
+# Or access the dashboard
 # http://localhost:15672 (guest/guest)
 ```
 
 ### Port already in use?
+
+```powershell
+# Windows: Find what's using the port
+netstat -ano | findstr :8001
+
+# Kill the process (replace PID)
+taskkill /PID <PID> /F
+```
+
 ```bash
-# Find what's using the port (Mac/Linux)
+# macOS/Linux
 lsof -i :8001
+kill -9 <PID>
+```
 
-# Kill the process (replace 12345 with PID)
-kill -9 12345
+### Service compilation errors?
 
-# Or change the port in docker-compose.yml
+```bash
+# Clean and rebuild a service
+cd auth-service
+mvn clean compile
+
+# Run with debug output
+mvn -X spring-boot:run
 ```
 
 ---
@@ -267,7 +347,12 @@ kill -9 12345
 ## 📚 Next Steps
 
 ### 1. **Explore API Documentation**
-Visit: http://localhost:8001/swagger-ui.html
+Visit each service's Swagger UI:
+- Auth: http://localhost:8001/swagger-ui.html
+- User: http://localhost:8002/swagger-ui.html
+- Appointment: http://localhost:8003/swagger-ui.html
+- Catalog: http://localhost:8004/swagger-ui.html
+- Notification: http://localhost:8005/swagger-ui.html
 
 ### 2. **Read Architecture Documentation**
 Open: `ARCHITECTURE.md`
@@ -279,48 +364,63 @@ Open: `IMPLEMENTATION_SUMMARY.md`
 Import: `auth-service/postman/Auth-Service-API.postman_collection.json`
 
 ### 5. **Review Source Code**
-- Auth Service logic: `auth-service/src/main/java/.../auth_service/`
+- Auth Service logic: `auth-service/src/main/java/.../`
 - Database schemas: `*/database/schema.sql`
 
 ---
 
 ## 🚀 Common Operations
 
-### Reset Everything to Fresh Start
+### Fresh Start
 ```bash
-docker-compose down -v  # Remove all data
-docker-compose build --no-cache  # Rebuild
-docker-compose up -d  # Start fresh
+# 1. Stop all services (close all terminal windows)
+# 2. Stop MySQL and RabbitMQ
+# 3. Delete databases
+mysql -u root -p -e "DROP DATABASE IF EXISTS auth_db;"
+mysql -u root -p -e "DROP DATABASE IF EXISTS user_db;"
+# ... repeat for all databases
+
+# 4. Recreate databases by running schemas
+mysql -u root -p < auth-service/database/schema.sql
+# ... repeat for all services
+
+# 5. Start all services again
 ```
 
-### View Real-time Logs
+### View Logs in Real-time
+
+In each terminal where a service is running:
 ```bash
-# All services
-docker-compose logs -f
-
-# Specific service
-docker-compose logs -f auth-service
-
-# Last 50 lines
-docker-compose logs --tail=50
+# Logs are printed to console automatically
+# Ctrl+C to stop the service
 ```
 
-### Execute Commands in Container
+### Connect to MySQL Directly
 ```bash
-# Connect to PostgreSQL
-docker-compose exec postgres psql -U postgres -d appointment_db
+# Connect
+mysql -u root -p
 
-# List all users
-# In psql: SELECT email, first_name FROM users;
+# List databases
+SHOW DATABASES;
 
-# Check appointment count
-# In psql: SELECT COUNT(*) FROM appointments;
+# Connect to a database
+USE auth_db;
+
+# List tables
+SHOW TABLES;
+
+# Query data
+SELECT email, first_name FROM users;
+SELECT COUNT(*) FROM appointments;
+
+# Exit
+EXIT;
 ```
 
-### View Environment Variables
-```bash
-docker-compose config | grep -E "environment|ports|SPRING_"
-```
+### Check Environment & Configuration
+Each service reads configuration from:
+- `src/main/resources/application.properties`
+- `src/main/resources/application-dev.properties` (if present)
 
 ---
 
@@ -332,10 +432,10 @@ docker-compose config | grep -E "environment|ports|SPRING_"
 - Shows request/response models
 - No need to copy tokens manually
 
-### Tip 2: Keep a Terminal Open for Logs
+### Tip 2: Use MySQL CLI for Queries
 ```bash
-# In one terminal, watch logs while testing
-docker-compose logs -f
+# Quick query without entering interactive mode
+mysql -u root -p -e "SELECT * FROM auth_db.users;"
 ```
 
 ### Tip 3: Save Tokens to Shell Variables

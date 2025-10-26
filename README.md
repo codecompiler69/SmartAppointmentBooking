@@ -16,38 +16,88 @@ A comprehensive microservices-based appointment booking system for doctors, pati
 
 ### Supporting Infrastructure
 
-- **PostgreSQL (5432)**: Shared database for all services
+- **MySQL (3306)**: Shared database for all services
 - **RabbitMQ (5672, 15672)**: Message broker for async communication
 - **Swagger/OpenAPI (via each service)**: API documentation
 
 ## 📋 Prerequisites
 
-- Docker & Docker Compose
-- Java 21+ (for local development)
+- Java 21+ (required)
 - Maven 3.8+
-- PostgreSQL 16+ (for local development)
-- RabbitMQ 3.12+ (for local development)
+- MySQL 8.0+ (required)
+- RabbitMQ 3.12+ (required)
 
-## 🚀 Quick Start with Docker
+## 🚀 Local Development Setup
 
-### 1. Clone and Navigate
+### 1. Prerequisites Installation
 
-```bash
-cd SmartAppointmentBookingSystem
+#### Windows
+```powershell
+# Install MySQL 8.0+ (if not already installed)
+# Download from: https://dev.mysql.com/downloads/mysql/
+
+# Install RabbitMQ
+# Download from: https://www.rabbitmq.com/download.html
+
+# Verify installations
+mysql --version
+# Check RabbitMQ service is running
 ```
 
-### 2. Start All Services
-
+#### macOS/Linux
 ```bash
-docker-compose up -d
+# Install MySQL
+brew install mysql
+
+# Install RabbitMQ
+brew install rabbitmq
+
+# Start services
+brew services start mysql
+brew services start rabbitmq
 ```
 
-This will start:
-- PostgreSQL database
-- RabbitMQ message broker
-- All 5 microservices
+### 2. Database Setup
 
-### 3. Check Service Health
+```bash
+# Login to MySQL
+mysql -u root -p
+
+# Execute all schema files in order
+source auth-service/database/schema.sql
+source user-service/database/schema.sql
+source appointment-service/database/schema.sql
+source service-catalog-service/database/schema.sql
+source notification-service/database/schema.sql
+```
+
+### 3. Start All Microservices Locally
+
+Open separate terminal windows for each service:
+
+```bash
+# Terminal 1: Auth Service (Port 8001)
+cd auth-service
+mvn spring-boot:run
+
+# Terminal 2: User Service (Port 8002)
+cd user-service
+mvn spring-boot:run
+
+# Terminal 3: Appointment Service (Port 8003)
+cd appointment-service
+mvn spring-boot:run
+
+# Terminal 4: Service Catalog Service (Port 8004)
+cd service-catalog-service
+mvn spring-boot:run
+
+# Terminal 5: Notification Service (Port 8005)
+cd notification-service
+mvn spring-boot:run
+```
+
+### 4. Verify All Services are Running
 
 ```bash
 # Check Auth Service
@@ -66,7 +116,7 @@ curl http://localhost:8004/swagger-ui.html
 curl http://localhost:8005/swagger-ui.html
 ```
 
-### 4. View RabbitMQ Management
+### 5. Access RabbitMQ Management Console
 
 Open: http://localhost:15672
 - Username: `guest`
@@ -279,33 +329,33 @@ GET http://localhost:8005/api/v1/notifications
 
 ### Without Docker
 
-#### 1. Start PostgreSQL
+#### 1. Start MySQL
 
 ```bash
 # Mac with Homebrew
-brew services start postgresql
+brew services start mysql
 
 # Linux
-sudo systemctl start postgresql
+sudo systemctl start mysql
 
-# Windows (via WSL)
-wsl sudo service postgresql start
+# Windows
+# Services → MySQL80 → Start
 ```
 
-#### 2. Create Database
+#### 2. Verify MySQL Connection
 
 ```bash
-psql -U postgres -c "CREATE DATABASE appointment_db;"
+mysql -u root -p
 ```
 
 #### 3. Import Schemas
 
 ```bash
-psql -U postgres -d appointment_db -f auth-service/database/schema.sql
-psql -U postgres -d appointment_db -f user-service/database/schema.sql
-psql -U postgres -d appointment_db -f appointment-service/database/schema.sql
-psql -U postgres -d appointment_db -f service-catalog-service/database/schema.sql
-psql -U postgres -d appointment_db -f notification-service/database/schema.sql
+mysql -u root -p < auth-service/database/schema.sql
+mysql -u root -p < user-service/database/schema.sql
+mysql -u root -p < appointment-service/database/schema.sql
+mysql -u root -p < service-catalog-service/database/schema.sql
+mysql -u root -p < notification-service/database/schema.sql
 ```
 
 #### 4. Start RabbitMQ

@@ -9,7 +9,7 @@ This is a production-grade microservices-based appointment booking system built 
 - **API Versioning**: URI-based versioning for future compatibility
 - **Async Processing**: RabbitMQ-based event-driven notifications
 - **Data Consistency**: Optimistic locking, transactional guarantees
-- **High Availability**: Docker containerization, orchestrated via docker-compose
+- **Local Development**: Easy setup with PostgreSQL and RabbitMQ
 - **Complete Documentation**: Swagger/OpenAPI on every service
 
 ---
@@ -651,8 +651,10 @@ spring.datasource.hikari.connection-timeout=20000
 
 ---
 
-## 📋 Deployment Checklist
+## 📋 Development & Deployment Checklist
 
+- [ ] Set up PostgreSQL and RabbitMQ locally
+- [ ] Initialize all database schemas
 - [ ] Update JWT secret in production
 - [ ] Configure email SMTP credentials
 - [ ] Set database credentials securely (env vars, vault)
@@ -681,8 +683,8 @@ spring.datasource.hikari.connection-timeout=20000
 
 - **API Docs**: http://localhost:<port>/swagger-ui.html
 - **RabbitMQ Console**: http://localhost:15672
-- **Docker Compose**: docker-compose.yml
-- **Environment**: .env.template
+- **Local Setup**: See QUICKSTART.md
+- **MySQL**: mysql connection via localhost:3306
 
 ---
 
