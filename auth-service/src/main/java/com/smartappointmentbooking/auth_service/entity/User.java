@@ -33,26 +33,8 @@ public class User {
     @Column
     private String phoneNumber;
 
-    @Column(nullable = false, columnDefinition = "boolean default false")
+    @Column
     private Boolean emailVerified;
-
-    @Column
-    private LocalDateTime emailVerifiedAt;
-
-    @Column
-    private String verificationToken;
-
-    @Column
-    private LocalDateTime verificationTokenExpiry;
-
-    @Column
-    private String passwordResetToken;
-
-    @Column
-    private LocalDateTime passwordResetTokenExpiry;
-
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean isDeleted;
 
     @ManyToMany(fetch = jakarta.persistence.FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

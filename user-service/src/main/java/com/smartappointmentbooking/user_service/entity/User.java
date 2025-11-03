@@ -28,6 +28,12 @@ public class User {
     @Column
     private String phoneNumber;
 
+    @Column
+    private String address;
+
+    @Column
+    private String role;
+
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean isDeleted;
 

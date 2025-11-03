@@ -1,0 +1,299 @@
+{
+    "info": {
+        "_postman_id": "user-service-collection",
+        "name": "User Service API",
+        "description": "User management service for Smart Appointment Booking System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "User Profile",
+            "item": [
+                {
+                    "name": "Get User Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8002/api/users/profile",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "users",
+                                "profile"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update User Profile",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"phoneNumber\": \"+1234567890\",\n  \"address\": \"123 Main St, City, State 12345\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8002/api/users/profile",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "users",
+                                "profile"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get User by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8002/api/users/{{user_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "users",
+                                "{{user_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete User Account",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8002/api/users/{{user_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "users",
+                                "{{user_id}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Doctor Profile",
+            "item": [
+                {
+                    "name": "Get Doctor Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8002/api/doctors/profile",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "doctors",
+                                "profile"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Doctor Profile",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"specialization\": \"Cardiology\",\n  \"licenseNumber\": \"MD123456\",\n  \"experience\": 10,\n  \"qualifications\": \"MBBS, MD\",\n  \"hospitalAffiliation\": \"City Hospital\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8002/api/doctors",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "doctors"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Doctor Profile",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"specialization\": \"Cardiology\",\n  \"experience\": 11,\n  \"qualifications\": \"MBBS, MD, DM Cardiology\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8002/api/doctors/{{doctor_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "doctors",
+                                "{{doctor_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Doctors",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8002/api/doctors",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "api",
+                                "doctors"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health & Info",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8002/actuator/health",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "actuator",
+                                "health"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Swagger UI",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8002/swagger-ui.html",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8002",
+                            "path": [
+                                "swagger-ui.html"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "jwt_token",
+            "value": "your_jwt_token_here",
+            "type": "string"
+        },
+        {
+            "key": "user_id",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "doctor_id",
+            "value": "1",
+            "type": "string"
+        }
+    ]
+}

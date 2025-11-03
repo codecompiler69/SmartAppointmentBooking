@@ -1,5 +1,6 @@
 package com.smartappointmentbooking.auth_service.service;
 
+import com.smartappointmentbooking.auth_service.client.UserServiceClient;
 import com.smartappointmentbooking.auth_service.dto.AuthResponse;
 import com.smartappointmentbooking.auth_service.dto.LoginRequest;
 import com.smartappointmentbooking.auth_service.dto.RegisterRequest;
@@ -34,6 +35,7 @@ public class AuthService {
     private final RoleRepository roleRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final UserServiceClient userServiceClient;
 
     public AuthResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
@@ -50,11 +52,15 @@ public class AuthService {
                 .lastName(registerRequest.getLastName())
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .emailVerified(false)
-                .isDeleted(false)
+
                 .roles(Set.of(role))
                 .build();
 
         user = userRepository.save(user);
+
+        // Create user in user-service database as well
+        userServiceClient.createUserInUserService(registerRequest, user.getId());
+
         String accessToken = jwtTokenProvider.generateAccessToken(user.getEmail());
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getEmail());
 
@@ -64,7 +70,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest loginRequest) {
-        User user = userRepository.findByEmailAndIsDeletedFalse(loginRequest.getEmail())
+        User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
@@ -100,35 +106,9 @@ public class AuthService {
     }
 
     public UserDTO getCurrentUser(String email) {
-        User user = userRepository.findByEmailAndIsDeletedFalse(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return mapToUserDTO(user);
-    }
-
-    public void verifyEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.setEmailVerified(true);
-        user.setEmailVerifiedAt(LocalDateTime.now());
-        userRepository.save(user);
-    }
-
-    public void initiatePasswordReset(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        String resetToken = jwtTokenProvider.generateAccessToken(email);
-        user.setPasswordResetToken(resetToken);
-        user.setPasswordResetTokenExpiry(LocalDateTime.now().plusHours(1));
-        userRepository.save(user);
-    }
-
-    public void resetPassword(String email, String newPassword) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.setPassword(passwordEncoder.encode(newPassword));
-        user.setPasswordResetToken(null);
-        user.setPasswordResetTokenExpiry(null);
-        userRepository.save(user);
     }
 
     private void saveRefreshToken(User user, String token) {
@@ -158,7 +138,6 @@ public class AuthService {
                 .lastName(user.getLastName())
                 .phoneNumber(user.getPhoneNumber())
                 .emailVerified(user.getEmailVerified())
-                .emailVerifiedAt(user.getEmailVerifiedAt())
                 .roles(user.getRoles().stream().map(r -> r.getName().toString()).collect(Collectors.toSet()))
                 .createdAt(user.getCreatedAt())
                 .build();

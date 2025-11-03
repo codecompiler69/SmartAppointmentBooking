@@ -1,0 +1,232 @@
+{
+    "info": {
+        "_postman_id": "catalog-service-collection",
+        "name": "Service Catalog API",
+        "description": "Medical services catalog management for Smart Appointment Booking System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Services",
+            "item": [
+                {
+                    "name": "Get All Services",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8004/api/services",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "api",
+                                "services"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Service by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8004/api/services/{{service_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "api",
+                                "services",
+                                "{{service_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Service",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"General Checkup\",\n  \"description\": \"Routine medical examination and health assessment\",\n  \"category\": \"General Medicine\",\n  \"duration\": 30,\n  \"basePrice\": 500,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8004/api/services",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "api",
+                                "services"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Service",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"General Checkup\",\n  \"description\": \"Comprehensive routine medical examination\",\n  \"category\": \"General Medicine\",\n  \"duration\": 45,\n  \"basePrice\": 600,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8004/api/services/{{service_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "api",
+                                "services",
+                                "{{service_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Service",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8004/api/services/{{service_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "api",
+                                "services",
+                                "{{service_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Search Services by Category",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8004/api/services/category/Cardiology",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "api",
+                                "services",
+                                "category",
+                                "Cardiology"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health & Info",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8004/actuator/health",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "actuator",
+                                "health"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Swagger UI",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8004/swagger-ui.html",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8004",
+                            "path": [
+                                "swagger-ui.html"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "jwt_token",
+            "value": "your_jwt_token_here",
+            "type": "string"
+        },
+        {
+            "key": "service_id",
+            "value": "1",
+            "type": "string"
+        }
+    ]
+}

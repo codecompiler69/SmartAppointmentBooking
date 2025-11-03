@@ -15,7 +15,6 @@ public class UserDTO {
     private String lastName;
     private String phoneNumber;
     private Boolean emailVerified;
-    private LocalDateTime emailVerifiedAt;
     private Set<String> roles;
     private LocalDateTime createdAt;
 }

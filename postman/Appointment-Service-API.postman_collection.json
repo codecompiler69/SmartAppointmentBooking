@@ -1,0 +1,268 @@
+{
+    "info": {
+        "_postman_id": "appointment-service-collection",
+        "name": "Appointment Service API",
+        "description": "Appointment booking and management service for Smart Appointment Booking System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Appointments",
+            "item": [
+                {
+                    "name": "Create Appointment",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"doctorId\": 1,\n  \"patientId\": 1,\n  \"serviceId\": 1,\n  \"appointmentDate\": \"2025-11-15\",\n  \"appointmentTime\": \"10:00\",\n  \"reason\": \"Regular checkup\",\n  \"notes\": \"No fasting required\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Appointments",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Appointment by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments/{{appointment_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments",
+                                "{{appointment_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Appointment",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"appointmentDate\": \"2025-11-20\",\n  \"appointmentTime\": \"14:00\",\n  \"reason\": \"Follow-up visit\",\n  \"status\": \"SCHEDULED\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments/{{appointment_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments",
+                                "{{appointment_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Cancel Appointment",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments/{{appointment_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments",
+                                "{{appointment_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Appointments by Doctor",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments/doctor/{{doctor_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments",
+                                "doctor",
+                                "{{doctor_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Appointments by Patient",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8003/api/appointments/patient/{{patient_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "api",
+                                "appointments",
+                                "patient",
+                                "{{patient_id}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health & Info",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8003/actuator/health",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "actuator",
+                                "health"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Swagger UI",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8003/swagger-ui.html",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8003",
+                            "path": [
+                                "swagger-ui.html"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "jwt_token",
+            "value": "your_jwt_token_here",
+            "type": "string"
+        },
+        {
+            "key": "appointment_id",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "doctor_id",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "patient_id",
+            "value": "1",
+            "type": "string"
+        }
+    ]
+}

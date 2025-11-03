@@ -1,0 +1,264 @@
+{
+    "info": {
+        "_postman_id": "notification-service-collection",
+        "name": "Notification Service API",
+        "description": "Notification management service for Smart Appointment Booking System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Notifications",
+            "item": [
+                {
+                    "name": "Get All Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Notification by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications/{{notification_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications",
+                                "{{notification_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Send Email Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"recipientEmail\": \"patient@example.com\",\n  \"subject\": \"Appointment Reminder\",\n  \"message\": \"Your appointment is scheduled for tomorrow at 10:00 AM\",\n  \"notificationType\": \"APPOINTMENT_REMINDER\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications/email",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications",
+                                "email"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Send SMS Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phoneNumber\": \"+1234567890\",\n  \"message\": \"Your appointment is scheduled for tomorrow at 10:00 AM\",\n  \"notificationType\": \"APPOINTMENT_REMINDER\"\n}"
+                        },
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications/sms",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications",
+                                "sms"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Notifications by User",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications/user/{{user_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications",
+                                "user",
+                                "{{user_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Mark Notification as Read",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications/{{notification_id}}/read",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications",
+                                "{{notification_id}}",
+                                "read"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Notification",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{jwt_token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "http://localhost:8005/api/notifications/{{notification_id}}",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "api",
+                                "notifications",
+                                "{{notification_id}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Health & Info",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8005/actuator/health",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "actuator",
+                                "health"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Swagger UI",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8005/swagger-ui.html",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "8005",
+                            "path": [
+                                "swagger-ui.html"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "jwt_token",
+            "value": "your_jwt_token_here",
+            "type": "string"
+        },
+        {
+            "key": "notification_id",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "user_id",
+            "value": "1",
+            "type": "string"
+        }
+    ]
+}

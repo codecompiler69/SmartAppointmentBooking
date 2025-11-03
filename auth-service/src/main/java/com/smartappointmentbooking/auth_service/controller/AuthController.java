@@ -49,25 +49,4 @@ public class AuthController {
         UserDTO user = authService.getCurrentUser(authentication.getName());
         return ResponseEntity.ok(user);
     }
-
-    @PostMapping("/verify-email")
-    @Operation(summary = "Verify user email")
-    public ResponseEntity<String> verifyEmail(@RequestParam String email) {
-        authService.verifyEmail(email);
-        return ResponseEntity.ok("Email verified successfully");
-    }
-
-    @PostMapping("/forgot-password")
-    @Operation(summary = "Initiate password reset")
-    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
-        authService.initiatePasswordReset(email);
-        return ResponseEntity.ok("Password reset link sent to email");
-    }
-
-    @PostMapping("/reset-password")
-    @Operation(summary = "Reset password with token")
-    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
-        authService.resetPassword(email, newPassword);
-        return ResponseEntity.ok("Password reset successfully");
-    }
 }
