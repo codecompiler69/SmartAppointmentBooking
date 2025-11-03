@@ -762,39 +762,3 @@ spring.mail.port=587
 spring.mail.username=your-email@gmail.com
 spring.mail.password=your-app-password
 ```
-
-## 🚢 Production Deployment
-
-### Environment Variables
-
-```bash
-# .env file
-SPRING_DATASOURCE_URL=jdbc:postgresql://prod-db:5432/appointment_db
-SPRING_DATASOURCE_USERNAME=prod_user
-SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-JWT_SECRET=${JWT_SECRET_KEY}
-SPRING_RABBITMQ_HOST=prod-rabbitmq
-SPRING_MAIL_PASSWORD=${MAIL_PASSWORD}
-```
-
-### Docker Compose Production
-
-```bash
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-```
-
-## 📜 License
-
-MIT License - see LICENSE file for details
-
-## 👥 Support
-
-For issues and questions:
-- Check the API documentation at `http://localhost:<port>/swagger-ui.html`
-- Review service logs: `docker-compose logs`
-- Inspect RabbitMQ: `http://localhost:15672`
-
----
-
-**Last Updated**: October 26, 2025
-**Version**: 1.0.0
